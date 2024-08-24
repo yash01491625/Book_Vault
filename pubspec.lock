@@ -75,6 +75,11 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_web_plugins:
+    dependency: transitive
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   leak_tracker:
     dependency: transitive
     description:
@@ -139,11 +144,27 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.9.0"
+  pinput:
+    dependency: "direct main"
+    description:
+      name: pinput
+      sha256: "543da5bfdefd9e06914a12100f8c9156f84cef3efc14bca507c49e966c5b813b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.0"
   sky_engine:
     dependency: transitive
     description: flutter
     source: sdk
     version: "0.0.99"
+  smart_auth:
+    dependency: transitive
+    description:
+      name: smart_auth
+      sha256: a25229b38c02f733d0a4e98d941b42bed91a976cb589e934895e60ccfa674cf6
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.1"
   source_span:
     dependency: transitive
     description:
@@ -191,7 +212,19 @@ packages:
       sha256: "9955ae474176f7ac8ee4e989dadfb411a58c30415bcfb648fa04b2b8a03afa7f"
       url: "https://pub.dev"
     source: hosted
+<<<<<<< HEAD
     version: "0.7.0"
+=======
+    version: "0.6.1"
+  universal_platform:
+    dependency: transitive
+    description:
+      name: universal_platform
+      sha256: "64e16458a0ea9b99260ceb5467a214c1f298d647c659af1bff6d3bf82536b1ec"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
+>>>>>>> 32a35d5cea3c5e4dff8458153b0523f9bb3bf4da
   vector_math:
     dependency: transitive
     description:
@@ -210,4 +243,8 @@ packages:
     version: "14.2.1"
 sdks:
   dart: ">=3.3.4 <4.0.0"
+<<<<<<< HEAD
   flutter: ">=3.18.0-18.0.pre.54"
+=======
+  flutter: ">=3.7.0"
+>>>>>>> 32a35d5cea3c5e4dff8458153b0523f9bb3bf4da

@@ -15,6 +15,7 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   bool _isObscurePassword = true;
   bool _isObscureConfirmPassword = true;
+  String? _password; // Store password input
 
   // Validators for each field
   String? _validateName(String? value) {
@@ -35,6 +36,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String? _validatePassword(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please enter a password';
+    }
+    _password = value; // Store password value
+    return null;
+  }
+
+  String? _validateConfirmPassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please confirm your password';
+    }
+    if (value != _password) {
+      return 'Passwords do not match';
     }
     return null;
   }
@@ -256,7 +268,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     SizedBox(height: screenHeight * 0.02),
                     TextFormField(
                       autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: _validatePassword,
+                      validator: _validateConfirmPassword,
+                      // Use the confirm password validator
                       obscureText: _isObscureConfirmPassword,
                       decoration: InputDecoration(
                         labelText: "Confirm Password",
@@ -278,7 +291,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           onPressed: () {
                             setState(() {
                               _isObscureConfirmPassword =
-                              !_isObscureConfirmPassword;
+                                  !_isObscureConfirmPassword;
                             });
                           },
                         ),
@@ -336,143 +349,107 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                     ),
                     SizedBox(height: screenHeight * 0.02),
-                    TextFormField(
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: _validateNumber,
-                      decoration: InputDecoration(
-                        labelText: "Roll Number",
-                        labelStyle: TextStyle(
-                          color: Colors.black87,
-                          fontSize: 16,
-                        ),
-                        prefixIcon: Icon(
-                          Icons.confirmation_number,
-                          color: Colors.black45,
-                        ),
-                        contentPadding: EdgeInsets.symmetric(
-                          vertical: screenHeight * 0.015,
-                          horizontal: screenWidth * 0.04,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide.none,
-                        ),
-                        filled: true,
-                        fillColor: Color(0xFFf1f5f9),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            width: 2.0,
-                            color: Colors.blueAccent,
+                    SizedBox(
+                      width: double.infinity, // This will make the dropdown use the available width
+                      child: DropdownButtonFormField<String>(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: _validateDepartment,
+                        decoration: InputDecoration(
+                          labelText: 'Department',
+                          labelStyle: TextStyle(
+                            color: Colors.black87,
+                            fontSize: 16,
                           ),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: screenHeight * 0.02),
-                    TextFormField(
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: _validateNumber,
-                      decoration: InputDecoration(
-                        labelText: "University PR Number",
-                        labelStyle: TextStyle(
-                          color: Colors.black87,
-                          fontSize: 16,
-                        ),
-                        prefixIcon: Icon(
-                          Icons.card_membership,
-                          color: Colors.black45,
-                        ),
-                        contentPadding: EdgeInsets.symmetric(
-                          vertical: screenHeight * 0.015,
-                          horizontal: screenWidth * 0.04,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide.none,
-                        ),
-                        filled: true,
-                        fillColor: Color(0xFFf1f5f9),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            width: 2.0,
-                            color: Colors.blueAccent,
+                          prefixIcon: Icon(
+                            Icons.business,
+                            color: Colors.black45,
                           ),
-                          borderRadius: BorderRadius.circular(12),
+                          contentPadding: EdgeInsets.symmetric(
+                            vertical: screenHeight * 0.015,
+                            horizontal: screenWidth * 0.04,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide.none,
+                          ),
+                          filled: true,
+                          fillColor: Color(0xFFf1f5f9),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              width: 2.0,
+                              color: Colors.blueAccent,
+                            ),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
                         ),
+                        items: [
+                          'Computer Engineering',
+                          'Electrical And Telecommunication',
+                          'Mechanical Engineering',
+                          'Civil Engineering',
+                          'VLSI',
+                          'Electrical And Electronics',
+                          'Information Technology',
+                        ].map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          // No need to setState here if you're just using validation
+                        },
                       ),
                     ),
-                    SizedBox(height: screenHeight * 0.02),
-                    DropdownButtonFormField<String>(
-                      validator: _validateDepartment,
-                      decoration: InputDecoration(
-                        labelText: "Department",
-                        labelStyle: TextStyle(
-                          color: Colors.black87,
-                          fontSize: 16,
-                        ),
-                        contentPadding: EdgeInsets.symmetric(
-                          vertical: screenHeight * 0.015,
-                          horizontal: screenWidth * 0.04,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      items: [
-                        DropdownMenuItem(value: "CSE", child: Text("Computer Engineering")),
-                        DropdownMenuItem(value: "IT", child: Text("Information Technology")),
-                        DropdownMenuItem(value: "ENE", child: Text("Electrical and Electronics")),
-                        DropdownMenuItem(value: "ETC", child: Text("Electronics and Telecommunication")),
-                        DropdownMenuItem(value: "ME", child: Text("Mechanical Engineering")),
-                        DropdownMenuItem(value: "CE", child: Text("Civil Engineering")),
-                        DropdownMenuItem(value: "VLSI", child: Text("Very Large Scale Integration")),
-                      ],
-                      onChanged: (value) {},
-                    ),
+
                     SizedBox(height: screenHeight * 0.03),
                     CustomElevatedButton(
-                      text: "Sign Up",
-                      backgroundColor: Colors.blue,
                       foregroundColor: Colors.white,
+                      backgroundColor: Colors.blue,
                       onPressed: () {
-                        if (_formKey.currentState?.validate() ?? false) {
+                        if (_formKey.currentState!.validate()) {
+                          // Proceed with signup
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const OTPScreen(),
-                            ),
+                                builder: (context) => const OTPScreen()),
                           );
                         }
                       },
+                      text: 'Next',
+                      textStyle: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
-                    SizedBox(height: screenHeight / 15),
+                    SizedBox(height: screenHeight * 0.02),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
+                        Text(
                           "Already have an account?",
                           style: TextStyle(fontSize: 16),
                         ),
-                        GestureDetector(
-                          onTap: () {
+                        TextButton(
+                          onPressed: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const LogInScreen(),
-                              ),
+                                  builder: (context) => const LogInScreen()),
                             );
                           },
-                          child: const Text(
-                            " Log In",
+                          child: Text(
+                            "Log In",
                             style: TextStyle(
-                              fontWeight: FontWeight.bold,
+                              color: Colors.blueAccent,
                               fontSize: 16,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(height: screenHeight / 20),
                   ],
                 ),
               ),

@@ -20,7 +20,7 @@ class _LogInScreenState extends State<LogInScreen> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => const UserHomeScreen(),
+          builder: (context) => UserHomeScreen(),
         ),
       );
     }
@@ -71,7 +71,7 @@ class _LogInScreenState extends State<LogInScreen> {
                   SizedBox(
                     height: screenHeight * 0.03,
                   ),
-                  Text(
+                  const Text(
                     "Log In",
                     style: TextStyle(
                       color: Colors.black,
@@ -82,7 +82,7 @@ class _LogInScreenState extends State<LogInScreen> {
                   SizedBox(
                     height: screenHeight * 0.02,
                   ),
-                  Text(
+                  const Text(
                     "Please enter your email and password to log in.",
                     style: TextStyle(
                       color: Colors.black54,
@@ -98,11 +98,11 @@ class _LogInScreenState extends State<LogInScreen> {
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
                       labelText: "Email",
-                      labelStyle: TextStyle(
+                      labelStyle: const TextStyle(
                         color: Colors.black87,
                         fontSize: 16,
                       ),
-                      prefixIcon: Icon(
+                      prefixIcon: const Icon(
                         Icons.email,
                         color: Colors.black45,
                       ),
@@ -115,16 +115,16 @@ class _LogInScreenState extends State<LogInScreen> {
                         borderSide: BorderSide.none,
                       ),
                       filled: true,
-                      fillColor: Color(0xFFf1f5f9),
+                      fillColor: const Color(0xFFf1f5f9),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
+                        borderSide: const BorderSide(
                           width: 2.0,
                           color: Colors.blueAccent,
                         ),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       errorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
+                        borderSide: const BorderSide(
                           width: 2.0,
                           color: Colors.redAccent,
                         ),
@@ -142,11 +142,11 @@ class _LogInScreenState extends State<LogInScreen> {
                     obscureText: true,
                     decoration: InputDecoration(
                       labelText: "Password",
-                      labelStyle: TextStyle(
+                      labelStyle: const TextStyle(
                         color: Colors.black87,
                         fontSize: 16,
                       ),
-                      prefixIcon: Icon(
+                      prefixIcon: const Icon(
                         Icons.lock,
                         color: Colors.black45,
                       ),
@@ -159,9 +159,9 @@ class _LogInScreenState extends State<LogInScreen> {
                         borderSide: BorderSide.none,
                       ),
                       filled: true,
-                      fillColor: Color(0xFFf1f5f9),
+                      fillColor: const Color(0xFFf1f5f9),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
+                        borderSide: const BorderSide(
                           width: 2.0,
                           color: Colors.blueAccent,
                         ),

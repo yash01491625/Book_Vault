@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
-
 import '../constants/colors.dart';
 import 'logInScreen.dart';
 
 class WelcomeScreen extends StatelessWidget {
-  const WelcomeScreen({Key? key}) : super(key: key);
-
+  const WelcomeScreen({super.key});
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
-
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -47,7 +44,7 @@ class WelcomeScreen extends StatelessWidget {
                     padding: EdgeInsets.all(screenWidth * 0.05),
                     child: Column(
                       children: [
-                        Spacer(),
+                        const Spacer(),
                         Text(
                           "Welcome to Your Library",
                           style: TextStyle(
@@ -55,7 +52,7 @@ class WelcomeScreen extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Spacer(),
+                        const Spacer(),
                         Text(
                           "Unlock knowledge\nexplore, and borrow books!",
                           textAlign: TextAlign.center,
@@ -67,7 +64,7 @@ class WelcomeScreen extends StatelessWidget {
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                        Spacer(flex: 3),
+                        const Spacer(flex: 3),
                         Align(
                           alignment: Alignment.centerRight,
                           child: Padding(
@@ -83,7 +80,7 @@ class WelcomeScreen extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => LogInScreen(),
+                                    builder: (context) => const LogInScreen(),
                                   ),
                                 );
                               },

@@ -83,7 +83,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       child: Image.asset("assets/images/signup.jpeg"),
                     ),
                     SizedBox(height: screenHeight * 0.03),
-                    Text(
+                    const Text(
                       "Sign Up",
                       style: TextStyle(
                         color: Colors.black,
@@ -92,7 +92,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                     ),
                     SizedBox(height: screenHeight * 0.02),
-                    Text(
+                    const Text(
                       "Fill in the details below to create an account.",
                       style: TextStyle(
                         color: Colors.black54,
@@ -105,11 +105,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       validator: _validateName,
                       decoration: InputDecoration(
                         labelText: "First Name",
-                        labelStyle: TextStyle(
+                        labelStyle: const TextStyle(
                           color: Colors.black87,
                           fontSize: 16,
                         ),
-                        prefixIcon: Icon(
+                        prefixIcon: const Icon(
                           Icons.person,
                           color: Colors.black45,
                         ),
@@ -122,9 +122,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           borderSide: BorderSide.none,
                         ),
                         filled: true,
-                        fillColor: Color(0xFFf1f5f9),
+                        fillColor: const Color(0xFFf1f5f9),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             width: 2.0,
                             color: Colors.blueAccent,
                           ),
@@ -138,11 +138,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       validator: _validateName,
                       decoration: InputDecoration(
                         labelText: "Last Name",
-                        labelStyle: TextStyle(
+                        labelStyle: const TextStyle(
                           color: Colors.black87,
                           fontSize: 16,
                         ),
-                        prefixIcon: Icon(
+                        prefixIcon: const Icon(
                           Icons.person,
                           color: Colors.black45,
                         ),
@@ -155,9 +155,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           borderSide: BorderSide.none,
                         ),
                         filled: true,
-                        fillColor: Color(0xFFf1f5f9),
+                        fillColor: const Color(0xFFf1f5f9),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             width: 2.0,
                             color: Colors.blueAccent,
                           ),
@@ -172,11 +172,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                         labelText: "Email",
-                        labelStyle: TextStyle(
+                        labelStyle: const TextStyle(
                           color: Colors.black87,
                           fontSize: 16,
                         ),
-                        prefixIcon: Icon(
+                        prefixIcon: const Icon(
                           Icons.email,
                           color: Colors.black45,
                         ),
@@ -189,16 +189,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           borderSide: BorderSide.none,
                         ),
                         filled: true,
-                        fillColor: Color(0xFFf1f5f9),
+                        fillColor: const Color(0xFFf1f5f9),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             width: 2.0,
                             color: Colors.blueAccent,
                           ),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             width: 2.0,
                             color: Colors.redAccent,
                           ),
@@ -213,11 +213,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       obscureText: _isObscurePassword,
                       decoration: InputDecoration(
                         labelText: "Password",
-                        labelStyle: TextStyle(
+                        labelStyle: const TextStyle(
                           color: Colors.black87,
                           fontSize: 16,
                         ),
-                        prefixIcon: Icon(
+                        prefixIcon: const Icon(
                           Icons.lock,
                           color: Colors.black45,
                         ),
@@ -243,9 +243,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           borderSide: BorderSide.none,
                         ),
                         filled: true,
-                        fillColor: Color(0xFFf1f5f9),
+                        fillColor: const Color(0xFFf1f5f9),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             width: 2.0,
                             color: Colors.blueAccent,
                           ),
@@ -260,11 +260,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       obscureText: _isObscureConfirmPassword,
                       decoration: InputDecoration(
                         labelText: "Confirm Password",
-                        labelStyle: TextStyle(
+                        labelStyle: const TextStyle(
                           color: Colors.black87,
                           fontSize: 16,
                         ),
-                        prefixIcon: Icon(
+                        prefixIcon: const Icon(
                           Icons.lock,
                           color: Colors.black45,
                         ),
@@ -291,9 +291,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           borderSide: BorderSide.none,
                         ),
                         filled: true,
-                        fillColor: Color(0xFFf1f5f9),
+                        fillColor: const Color(0xFFf1f5f9),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             width: 2.0,
                             color: Colors.blueAccent,
                           ),
@@ -308,11 +308,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       keyboardType: TextInputType.phone,
                       decoration: InputDecoration(
                         labelText: "Mobile Number",
-                        labelStyle: TextStyle(
+                        labelStyle: const TextStyle(
                           color: Colors.black87,
                           fontSize: 16,
                         ),
-                        prefixIcon: Icon(
+                        prefixIcon: const Icon(
                           Icons.phone,
                           color: Colors.black45,
                         ),
@@ -325,9 +325,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           borderSide: BorderSide.none,
                         ),
                         filled: true,
-                        fillColor: Color(0xFFf1f5f9),
+                        fillColor: const Color(0xFFf1f5f9),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             width: 2.0,
                             color: Colors.blueAccent,
                           ),
@@ -341,11 +341,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       validator: _validateNumber,
                       decoration: InputDecoration(
                         labelText: "Roll Number",
-                        labelStyle: TextStyle(
+                        labelStyle: const TextStyle(
                           color: Colors.black87,
                           fontSize: 16,
                         ),
-                        prefixIcon: Icon(
+                        prefixIcon: const Icon(
                           Icons.confirmation_number,
                           color: Colors.black45,
                         ),
@@ -358,9 +358,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           borderSide: BorderSide.none,
                         ),
                         filled: true,
-                        fillColor: Color(0xFFf1f5f9),
+                        fillColor: const Color(0xFFf1f5f9),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             width: 2.0,
                             color: Colors.blueAccent,
                           ),
@@ -374,11 +374,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       validator: _validateNumber,
                       decoration: InputDecoration(
                         labelText: "University PR Number",
-                        labelStyle: TextStyle(
+                        labelStyle: const TextStyle(
                           color: Colors.black87,
                           fontSize: 16,
                         ),
-                        prefixIcon: Icon(
+                        prefixIcon: const Icon(
                           Icons.card_membership,
                           color: Colors.black45,
                         ),
@@ -391,9 +391,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           borderSide: BorderSide.none,
                         ),
                         filled: true,
-                        fillColor: Color(0xFFf1f5f9),
+                        fillColor: const Color(0xFFf1f5f9),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             width: 2.0,
                             color: Colors.blueAccent,
                           ),
@@ -406,7 +406,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       validator: _validateDepartment,
                       decoration: InputDecoration(
                         labelText: "Department",
-                        labelStyle: TextStyle(
+                        labelStyle: const TextStyle(
                           color: Colors.black87,
                           fontSize: 16,
                         ),
@@ -418,7 +418,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      items: [
+                      items: const [
                         DropdownMenuItem(value: "CSE", child: Text("Computer Engineering")),
                         DropdownMenuItem(value: "IT", child: Text("Information Technology")),
                         DropdownMenuItem(value: "ENE", child: Text("Electrical and Electronics")),

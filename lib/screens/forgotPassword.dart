@@ -37,7 +37,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: height * 0.05),
-                Text(
+                const Text(
                   "Forgot Password",
                   style: TextStyle(
                     color: Colors.black,
@@ -46,7 +46,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   ),
                 ),
                 SizedBox(height: height * 0.02),
-                Text(
+                const Text(
                   "Enter your Email ID to reset your password.",
                   style: TextStyle(
                     color: Colors.black54,
@@ -61,11 +61,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   validator: _validateEmail,
                   decoration: InputDecoration(
                     labelText: "Email",
-                    labelStyle: TextStyle(
+                    labelStyle: const TextStyle(
                       color: Colors.black87,
                       fontSize: 16,
                     ),
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.email,
                       color: Colors.black45,
                     ),
@@ -78,16 +78,16 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       borderSide: BorderSide.none,
                     ),
                     filled: true,
-                    fillColor: Color(0xFFf1f5f9),
+                    fillColor: const Color(0xFFf1f5f9),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
+                      borderSide: const BorderSide(
                         width: 2.0,
                         color: Colors.blueAccent,
                       ),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     errorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
+                      borderSide: const BorderSide(
                         width: 2.0,
                         color: Colors.redAccent,
                       ),
@@ -102,7 +102,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => OTPResPasswordScreen(),
+                            builder: (context) => const OTPResPasswordScreen(),
                           ),
                         );
                       }
@@ -110,7 +110,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   backgroundColor: Colors.blue,
                     text: "Next",
                   foregroundColor: Colors.white,
-                  textStyle: TextStyle(
+                  textStyle: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
                     color: Colors.white,

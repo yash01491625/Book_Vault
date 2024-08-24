@@ -102,7 +102,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => OTPResPasswordScreen(),
+                            builder: (context) => const OTPResPassScreen(),
                           ),
                         );
                       }

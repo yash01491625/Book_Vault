@@ -1,8 +1,7 @@
-import 'package:book_vault/screens/setNewPassword.dart';
-import 'package:book_vault/screens/userHomeScreen.dart';
 import 'package:flutter/material.dart';
-
 import 'package:pinput/pinput.dart';
+import 'package:book_vault/screens/setNewPassword.dart'; // Ensure this is used
+// import 'package:book_vault/screens/userHomeScreen.dart'; // Remove if unused
 
 class OTPResPassScreen extends StatelessWidget {
   const OTPResPassScreen({super.key});
@@ -72,7 +71,7 @@ class OTPResPassScreen extends StatelessWidget {
                   length: 4,
                   defaultPinTheme: defaultPinTheme,
                   focusedPinTheme: defaultPinTheme.copyWith(
-                    decoration: defaultPinTheme.decoration!.copyWith(
+                    decoration: defaultPinTheme.decoration?.copyWith(
                       border: Border.all(
                         color: const Color.fromARGB(39, 197, 186, 217),
                       ),

@@ -4,7 +4,6 @@ import 'package:book_vault/screens/welcomeScreen.dart';
 
 void main() => runApp(const MyApp());
 
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 

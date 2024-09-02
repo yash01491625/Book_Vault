@@ -1,23 +1,5 @@
-// import 'package:flutter/material.dart';
-
-// class UserHomeScreen extends StatelessWidget {
-//   const UserHomeScreen({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar (
-//        title: const Text("User Home"), 
-//       ),
-//       body: const Center (
-//         child: Text("Welcome to the User Home Screen!"),
-//       )
-//     );
-//   }
-// }
-
-
 import 'package:flutter/material.dart';
+import '../widgets/myDrawerHeader.dart';
 import 'profileScreen.dart';
 
 void main() {
@@ -38,13 +20,21 @@ class UserHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(
+        child: SingleChildScrollView(
+          child: Container(
+            child: Column(
+              children: [
+                MyHeaderDrawer(),
+                MyDrawerlist(),
+              ],
+            ),
+          ),
+        ),
+      ),
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.menu, color: Colors.black),
-          onPressed: () {},
-        ),
         actions: [
           IconButton(
             icon: Icon(Icons.search, color: Colors.black),
@@ -54,11 +44,12 @@ class UserHomeScreen extends StatelessWidget {
             padding: const EdgeInsets.only(right: 8.0),
             child: IconButton(
               icon: CircleAvatar(
-                backgroundImage: AssetImage('/home/yashmalviya/Downloads/blank-profile-picture-973460_960_720.webp'),
+                backgroundImage: AssetImage(
+                    '/home/yashmalviya/Downloads/blank-profile-picture-973460_960_720.webp'),
               ),
               iconSize: 40.0,
               onPressed: () {
-                Navigator.push (
+                Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => ProfileScreen()),
                 );
@@ -151,6 +142,50 @@ class UserHomeScreen extends StatelessWidget {
         currentIndex: 0,
         selectedItemColor: Colors.redAccent,
         onTap: (index) {},
+      ),
+    );
+  }
+  Widget MyDrawerlist() {
+    return Container(
+      padding: EdgeInsets.only(
+        top: 15,
+      ),
+      child: Column(
+        //show the list of all the options
+        children: [
+          menuItem(),
+          menuItem(),
+          menuItem(),
+          menuItem(),
+          menuItem(),
+        ],
+      ),
+    );
+  }
+
+  Widget menuItem() {
+    return Material(
+      child: InkWell(
+        child: Padding(
+          padding: EdgeInsets.all(15.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: Icon(
+                  Icons.person,
+                  size: 20,
+                  color: Colors.black,
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Text(
+                  'Profile',
+                  style: TextStyle(color: Colors.black, fontSize: 16),
+                ),),
+            ],
+          ),
+        ),
       ),
     );
   }

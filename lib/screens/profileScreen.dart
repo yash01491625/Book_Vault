@@ -18,6 +18,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Fetch screen dimensions
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final textScaleFactor = MediaQuery.of(context).textScaleFactor;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Student Profile'),
@@ -29,89 +34,89 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(screenWidth * 0.04), // Responsive padding
         child: ListView(
           children: [
             Center(
               child: CircleAvatar(
-                radius: 50,
-                backgroundImage: AssetImage('/home/yashmalviya/Downloads/blank-profile-picture-973460_960_720.webp'),
+                radius: screenWidth * 0.15, // Responsive circle avatar size
+                backgroundImage: AssetImage('assets/images/profile.png'),
               ),
             ),
-            SizedBox(height: 16),
-            Center(
-              child: ElevatedButton(
-                onPressed: () async {
-                  final updatedData = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => EditProfileScreen(
-                        firstName: firstName,
-                        lastName: lastName,
-                        email: email,
-                        prNumber: prNumber,
-                        mobileNumber: mobileNumber,
-                        department: department,
-                        university: university,
-                      ),
-                    ),
-                  );
-
-                  if (updatedData != null) {
-                    setState(() {
-                      firstName = updatedData['firstName'] ?? firstName;
-                      lastName = updatedData['lastName'] ?? lastName;
-                      email = updatedData['email'] ?? email;
-                      prNumber = updatedData['prNumber'] ?? prNumber;
-                      mobileNumber = updatedData['mobileNumber'] ?? mobileNumber;
-                      department = updatedData['department'] ?? department;
-                      university = updatedData['university'] ?? university;
-                    });
-                  }
-                },
-                child: Text('EDIT PROFILE'),
-              ),
-            ),
-            SizedBox(height: 24),
-            _buildProfileField('First Name', firstName),
-            SizedBox(height: 16),
-            _buildProfileField('Last Name', lastName),
-            SizedBox(height: 16),
-            _buildProfileField('Email', email),
-            SizedBox(height: 16),
-            _buildProfileField('Department', department),
-            SizedBox(height: 16),
-            _buildProfileField('University', university),
-            SizedBox(height: 16),
-            _buildProfileField('PR Number', prNumber),
-            SizedBox(height: 16),
-            _buildProfileField('Mobile Number', mobileNumber),
-            SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => BorrowedBooksScreen(),
-                  ),
-                );
-              },
-              child: Text('View Borrowed Books'),
-            ),
+            // Center(
+//             //   child: ElevatedButton(
+//             //     onPressed: () async {
+//             //       final updatedData = await Navigator.push(
+//             //         context,
+//             //         MaterialPageRoute(
+//             //           builder: (context) => EditProfileScreen(
+//             //             firstName: firstName,
+//             //             lastName: lastName,
+//             //             email: email,
+//             //             prNumber: prNumber,
+//             //             mobileNumber: mobileNumber,
+//             //             department: department,
+//             //             university: university,
+//             //           ),
+//             //         ),
+//             //       );
+//             //
+//             //       if (updatedData != null) {
+//             //         setState(() {
+//             //           firstName = updatedData['firstName'] ?? firstName;
+//             //           lastName = updatedData['lastName'] ?? lastName;
+//             //           email = updatedData['email'] ?? email;
+//             //           prNumber = updatedData['prNumber'] ?? prNumber;
+//             //           mobileNumber = updatedData['mobileNumber'] ?? mobileNumber;
+//             //           department = updatedData['department'] ?? department;
+//             //           university = updatedData['university'] ?? university;
+//             //         });
+//             //       }
+//             //     },
+//             //     child: Text('EDIT PROFILE'),
+//             //   ),
+//             // ),
+            SizedBox(height: screenHeight * 0.02), // Responsive spacing
+            SizedBox(height: screenHeight * 0.03),
+            _buildProfileField('First Name', firstName, textScaleFactor),
+            SizedBox(height: screenHeight * 0.02),
+            _buildProfileField('Last Name', lastName, textScaleFactor),
+            SizedBox(height: screenHeight * 0.02),
+            _buildProfileField('Email', email, textScaleFactor),
+            SizedBox(height: screenHeight * 0.02),
+            _buildProfileField('Department', department, textScaleFactor),
+            SizedBox(height: screenHeight * 0.02),
+            _buildProfileField('University', university, textScaleFactor),
+            SizedBox(height: screenHeight * 0.02),
+            _buildProfileField('PR Number', prNumber, textScaleFactor),
+            SizedBox(height: screenHeight * 0.02),
+            _buildProfileField('Mobile Number', mobileNumber, textScaleFactor),
+            SizedBox(height: screenHeight * 0.03),
+            // ElevatedButton(
+//             //   onPressed: () {
+//             //     Navigator.push(
+//             //       context,
+//             //       MaterialPageRoute(
+//             //         builder: (context) => BorrowedBooksScreen(),
+//             //       ),
+//             //     );
+//             //   },
+//             //   child: Text('View Borrowed Books'),
+//             // ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildProfileField(String label, String value) {
+  Widget _buildProfileField(String label, String value, double textScaleFactor) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           label,
           style: TextStyle(
-            fontSize: 16,
+            fontSize: 16 * textScaleFactor, // Responsive text size
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -119,7 +124,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Text(
           value,
           style: TextStyle(
-            fontSize: 18,
+            fontSize: 18 * textScaleFactor, // Responsive text size
             fontWeight: FontWeight.w600,
             color: Colors.black87,
           ),

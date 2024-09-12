@@ -1,6 +1,7 @@
-import 'package:book_vault/widgets/elevatedButton.dart';
 import 'package:flutter/material.dart';
+
 import 'package:book_vault/screens/otpResPassword.dart';
+import 'package:book_vault/widgets/elevatedButton.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});

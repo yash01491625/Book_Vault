@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import '../widgets/myDrawerHeader.dart';
+import 'borrowedBooks.dart';
 import 'profileScreen.dart';
 
 void main() {
@@ -26,7 +28,45 @@ class UserHomeScreen extends StatelessWidget {
             child: Column(
               children: [
                 MyHeaderDrawer(),
-                MyDrawerlist(),
+                ListTile(
+                  leading: Icon(Icons.person),
+                  title: Text("Profile"),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProfileScreen(),
+                      ),
+                    );
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.add_card),
+                  title: Text("Borrowed"),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BorrowedBooksScreen(),
+                      ),
+                    );
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.favorite),
+                  title: Text("Favourites"),
+                  onTap: () => print("Listtile Tapped"),
+                ),
+                ListTile(
+                  leading: Icon(Icons.settings),
+                  title: Text("Settings"),
+                  onTap: () => print("Listtile Tapped"),
+                ),
+                ListTile(
+                  leading: Icon(Icons.logout),
+                  title: Text("Log Out"),
+                  onTap: () => print("Listtile Tapped"),
+                ),
               ],
             ),
           ),
@@ -40,23 +80,23 @@ class UserHomeScreen extends StatelessWidget {
             icon: Icon(Icons.search, color: Colors.black),
             onPressed: () {},
           ),
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: IconButton(
-              icon: CircleAvatar(
-                backgroundImage: AssetImage(
-                    '/home/yashmalviya/Downloads/blank-profile-picture-973460_960_720.webp'),
-              ),
-              iconSize: 40.0,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProfileScreen()),
-                );
-                print('Avatar button pressed!');
-              },
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.only(right: 8.0),
+          //   child: IconButton(
+          //     icon: CircleAvatar(
+          //       backgroundImage: AssetImage(
+          //           '/home/yashmalviya/Downloads/blank-profile-picture-973460_960_720.webp'),
+          //     ),
+          //     iconSize: 40.0,
+          //     onPressed: () {
+          //       Navigator.push(
+          //         context,
+          //         MaterialPageRoute(builder: (context) => ProfileScreen()),
+          //       );
+          //       print('Avatar button pressed!');
+          //     },
+          //   ),
+          // ),
         ],
       ),
       body: Padding(
@@ -142,50 +182,6 @@ class UserHomeScreen extends StatelessWidget {
         currentIndex: 0,
         selectedItemColor: Colors.redAccent,
         onTap: (index) {},
-      ),
-    );
-  }
-  Widget MyDrawerlist() {
-    return Container(
-      padding: EdgeInsets.only(
-        top: 15,
-      ),
-      child: Column(
-        //show the list of all the options
-        children: [
-          menuItem(),
-          menuItem(),
-          menuItem(),
-          menuItem(),
-          menuItem(),
-        ],
-      ),
-    );
-  }
-
-  Widget menuItem() {
-    return Material(
-      child: InkWell(
-        child: Padding(
-          padding: EdgeInsets.all(15.0),
-          child: Row(
-            children: [
-              Expanded(
-                child: Icon(
-                  Icons.person,
-                  size: 20,
-                  color: Colors.black,
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Text(
-                  'Profile',
-                  style: TextStyle(color: Colors.black, fontSize: 16),
-                ),),
-            ],
-          ),
-        ),
       ),
     );
   }

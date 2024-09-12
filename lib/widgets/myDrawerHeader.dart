@@ -11,7 +11,7 @@ class _MyHeaderDrawerState extends State<MyHeaderDrawer> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.green[700],
+      color: Colors.white70,
       width: double.infinity,
       height: 200,
       padding: EdgeInsets.only(top: 20.0),
@@ -24,12 +24,13 @@ class _MyHeaderDrawerState extends State<MyHeaderDrawer> {
             decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 image: DecorationImage(
-                  image: AssetImage('assets/images/sort.png'),
-                )),
+                  image: AssetImage('assets/images/BookVault-1.svg'),
+                ),
+            ),
           ),
           Text(
             'BookVault',
-            style: TextStyle(color: Colors.white, fontSize: 20),
+            style: TextStyle(color: Colors.black, fontSize: 20),
           ),
           Text(
             'Your gateway to literary treasures',

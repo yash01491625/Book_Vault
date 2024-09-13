@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "236547106080",
-    "project_id": "book-vault-adf41",
-    "storage_bucket": "book-vault-adf41.appspot.com"
+    "project_number": "517870828399",
+    "project_id": "book-vault-29cd7",
+    "storage_bucket": "book-vault-29cd7.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:236547106080:android:ad9e64b9f9d3638f5fe345",
+        "mobilesdk_app_id": "1:517870828399:android:81ea1e82cc061c3dfb869a",
         "android_client_info": {
           "package_name": "com.example.book_vault"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAugZ90_BY1jabuM-JC4fHjfAaUpIqcuYY"
+          "current_key": "AIzaSyC5mf5ut5FepqmFSwMXMKgdLL27qflR9es"
         }
       ],
       "services": {

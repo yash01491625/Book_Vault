@@ -1,12 +1,15 @@
 buildscript {
+    ext.kotlin_version = '1.8.22'  // Ensuring Kotlin version is 1.8.22
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
     dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"  // Use Kotlin 1.8.22 plugin
         classpath 'com.google.gms:google-services:4.4.2'
     }
 }
+
 allprojects {
     repositories {
         google()
@@ -15,10 +18,9 @@ allprojects {
 }
 
 rootProject.buildDir = '../build'
+
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
-}
-subprojects {
     project.evaluationDependsOn(':app')
 }
 

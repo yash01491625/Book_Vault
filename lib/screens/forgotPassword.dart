@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-
-import 'package:book_vault/screens/otpResPassword.dart';
+import 'package:book_vault/auth/auth_service.dart';
+import 'package:book_vault/constants/colors.dart';
 import 'package:book_vault/widgets/elevatedButton.dart';
+import 'package:book_vault/widgets/forgotPasswordSvg.dart';
+import 'package:book_vault/widgets/customTextform.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -11,8 +13,35 @@ class ForgotPasswordScreen extends StatefulWidget {
 }
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
-  final _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailController = TextEditingController();
+
+  final _auth = AuthService();
+  final _email = TextEditingController();
+
+  @override
+  void dispose() {
+    _email.dispose();
+    super.dispose();
+  }
+
+  void _next() async {
+    if (_email.text.isNotEmpty) {
+      try {
+        await _auth.sendPasswordResetEmail(_email.text);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("An email to reset your password has been sent.")),
+        );
+        Navigator.pop(context);
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Failed to send email: $e")),
+        );
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please enter a valid email address.")),
+      );
+    }
+  }
 
   String? _validateEmail(String? value) {
     final emailRegex = RegExp(r'^[\w\.-]+@[\w-]+\.\w{2,3}(\.\w{2,3})?$');
@@ -24,102 +53,127 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: kwhite,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.all(width * 0.05),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(height: height * 0.05),
-                const Text(
-                  "Forgot Password",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
+                Container(
+                  width: screenWidth,
+                  height: screenHeight / 11,
+                  decoration: BoxDecoration(
+                    color: kblue_2,
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(screenWidth / 5),
+                        bottomRight: Radius.circular(screenWidth / 5)
+                    )
                   ),
                 ),
-                SizedBox(height: height * 0.02),
-                const Text(
-                  "Enter your Email ID to reset your password.",
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontSize: 18,
-                  ),
-                ),
-                SizedBox(height: height * 0.04),
-                TextFormField(
-                  controller: _emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: _validateEmail,
-                  decoration: InputDecoration(
-                    labelText: "Email",
-                    labelStyle: const TextStyle(
-                      color: Colors.black87,
-                      fontSize: 16,
+
+                SizedBox(height: screenHeight * 0.04),
+
+                Align(
+                  alignment: Alignment.center,
+                  child: Container(
+                    height: screenHeight * 0.711,
+                    width: screenWidth * 0.85,
+                    decoration: BoxDecoration(
+                      color: kblue_2, // Background color
+                      borderRadius: BorderRadius.circular(screenWidth * 0.13),// Rounded corners
                     ),
-                    prefixIcon: const Icon(
-                      Icons.email,
-                      color: Colors.black45,
-                    ),
-                    contentPadding: EdgeInsets.symmetric(
-                      vertical: height * 0.015,
-                      horizontal: width * 0.04,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide.none,
-                    ),
-                    filled: true,
-                    fillColor: const Color(0xFFf1f5f9),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                        width: 2.0,
-                        color: Colors.blueAccent,
-                      ),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                        width: 2.0,
-                        color: Colors.redAccent,
-                      ),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                ),
-                SizedBox(height: height * 0.04),
-                CustomElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState?.validate() ?? false) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const OTPResPassScreen(),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+
+                        SizedBox(height: screenHeight * 0.1),
+
+                        Forgotpasswordsvg(
+                                  imagePath: "assets/images/Padlock.svg",
+                                  text1: "Forgot Password",
+                                  text2: "Enter your registered email",
+                                  screenwidth: screenWidth,
+                                  screenheight: screenHeight,
+                                  svgcolour: kwhite,
+                            ),
+
+                        SizedBox(height: screenHeight * 0.065),
+
+                        CustomTextFormField(
+                          controller: _email,
+                          keyboardType: TextInputType.emailAddress,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          validator: _validateEmail,
+                          hintText: "Email",
+                          hintStyle: TextStyle(
+                            color: Colors.black54,
+                            fontSize: screenWidth / 24,
                           ),
-                        );
-                      }
-                    },
-                  backgroundColor: Colors.blue,
-                    text: "Next",
-                  foregroundColor: Colors.white,
-                  textStyle: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                    color: Colors.white,
+                          icon: const Icon(
+                            Icons.email,
+                            color: Colors.black45,
+                          ),
+
+                          contentPadding: EdgeInsets.fromLTRB(
+                            screenWidth * 0.04,
+                            screenHeight * 0.02,
+                            screenWidth * 0.04,
+                            screenHeight * 0.02,
+                          ),
+
+                          borderRadius: screenWidth/10,
+                          fillColor: kwhite,
+                          screenHeight: screenHeight,
+                          screenWidth: screenWidth,
+                          errorStyle: TextStyle(
+                              fontSize: screenHeight / 67,
+                              height: screenHeight / 1000,
+                              color: kwhite // or any other color
+                          ),
+                          heightfactor: 0.09,
+                          widthfactor: 0.72,
+                        ),
+
+                        SizedBox(height: screenHeight * 0.015),
+
+                        CustomElevatedButton(
+                          onPressed: _next,
+                          backgroundColor: kdarkblue,
+                          text: "Next",
+                          foregroundColor: kwhite,
+                          borderRadius: screenWidth * 0.13,
+                          width: screenWidth * 0.72,
+                          height: screenHeight * 0.075,
+                          textStyle: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: screenWidth * 0.043,
+                            color: kwhite,
+                          ),
+                        ),
+                    ]
+                  ),
+                 ),
+                ),
+
+                SizedBox(height: screenHeight * 0.04),
+
+                Container(
+                  width: screenWidth,
+                  height: screenHeight / 11,
+                  decoration: BoxDecoration(
+                      color: kblue_2,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(screenWidth / 5),
+                          topRight: Radius.circular(screenWidth / 5)
+                      )
                   ),
                 ),
               ],
             ),
-          ),
         ),
       ),
     );

@@ -1,29 +1,62 @@
-import 'package:book_vault/screens/signUpScreen.dart';
+
+import 'package:book_vault/constants/colors.dart';
+import 'package:book_vault/widgets/customTextform.dart';
+import 'package:book_vault/widgets/elevatedButton.dart';
+import 'package:book_vault/widgets/portrait_mode_wrapper.dart';
+import 'package:book_vault/widgets/customBookVaultSvg.dart';
+import 'package:book_vault/auth/auth_service.dart';
 import 'package:book_vault/screens/userHomeScreen.dart';
 import 'package:flutter/material.dart';
+import 'dart:developer';
+import 'package:book_vault/screens/signUpScreen.dart';
+import 'package:book_vault/screens/forgotPassword.dart';
 
-import '../widgets/elevatedButton.dart';
-import 'forgotPassword.dart';
 
-final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
 
 class LogInScreen extends StatefulWidget {
   const LogInScreen({super.key});
 
   @override
-  State<LogInScreen> createState() => _LogInScreenState();
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LogInScreenState extends State<LogInScreen> {
-  void _submitForm() {
-    if (_formKey.currentState!.validate()) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => UserHomeScreen(),
-        ),
-      );
-    }
+class _LoginScreenState extends State<LogInScreen> {
+
+  final AuthService _auth = AuthService();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  bool _isLoading = false;
+  bool _obscureText = true;
+
+  void goToSignup(BuildContext context) => Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => const SignUpScreen()),
+  );
+
+  void _showForgotPasswordDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => ForgotPasswordScreen(),
+    );
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Login Error"),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text("OK"),
+            )
+          ],
+        );
+      },
+    );
   }
 
   String? _validateEmail(String? email) {
@@ -37,6 +70,11 @@ class _LogInScreenState extends State<LogInScreen> {
     return null;
   }
 
+  bool _isValidEmail(String email) {
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    return emailRegex.hasMatch(email);
+  }
+
   String? _validatePassword(String? password) {
     if (password == null || password.isEmpty) {
       return "Enter Password";
@@ -44,191 +82,240 @@ class _LogInScreenState extends State<LogInScreen> {
     return null;
   }
 
+  void _login() async {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
+
+    if (email.isEmpty || password.isEmpty) {
+      _showErrorDialog("Please fill all fields.");
+      return;
+    }
+
+    if (!_isValidEmail(email) || !email.endsWith("@gec.ac.in")) {
+      _showErrorDialog("Please enter a valid email address.");
+      return;
+    }
+
+    setState(() {
+      _isLoading = true; // Show loading indicator
+    });
+
+    final user = await _auth.loginUserWithEmailAndPassword(email, password);
+
+    setState(() {
+      _isLoading = false; // Hide loading indicator
+    });
+
+    if (user != null) {
+      log("User Logged In");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Login Successful!')), // Success message
+      );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => UserHomeScreen()),
+      );
+    } else {
+      _showErrorDialog("Password or Email entered is incorrect.");
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.all(screenWidth * 0.05), // Responsive padding
-            child: Form(
-              key: _formKey,
+    return PortraitModeWrapper(
+      child: SafeArea(
+      child: Scaffold(
+        body: OrientationBuilder(
+          builder: (context, orientation) {
+            return SingleChildScrollView(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
+                children: [
                   SizedBox(
-                    width: double.infinity,
-                    height: screenHeight / 2.8,
-                    child: Image.asset(
-                      "assets/images/login.jpg",
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                  SizedBox(
-                    height: screenHeight * 0.03,
-                  ),
-                  const Text(
-                    "Log In",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(
-                    height: screenHeight * 0.02,
-                  ),
-                  const Text(
-                    "Please enter your email and password to log in.",
-                    style: TextStyle(
-                      color: Colors.black54,
-                      fontSize: 18,
-                    ),
-                  ),
-                  SizedBox(
-                    height: screenHeight * 0.03,
-                  ),
-                  TextFormField(
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: _validateEmail,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: InputDecoration(
-                      labelText: "Email",
-                      labelStyle: const TextStyle(
-                        color: Colors.black87,
-                        fontSize: 16,
-                      ),
-                      prefixIcon: const Icon(
-                        Icons.email,
-                        color: Colors.black45,
-                      ),
-                      contentPadding: EdgeInsets.symmetric(
-                        vertical: screenHeight * 0.015,
-                        horizontal: screenWidth * 0.04,
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide.none,
-                      ),
-                      filled: true,
-                      fillColor: const Color(0xFFf1f5f9),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                          width: 2.0,
-                          color: Colors.blueAccent,
-                        ),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                          width: 2.0,
-                          color: Colors.redAccent,
-                        ),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: screenHeight * 0.02,
-                  ),
-                  TextFormField(
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: _validatePassword,
-                    keyboardType: TextInputType.visiblePassword,
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      labelText: "Password",
-                      labelStyle: const TextStyle(
-                        color: Colors.black87,
-                        fontSize: 16,
-                      ),
-                      prefixIcon: const Icon(
-                        Icons.lock,
-                        color: Colors.black45,
-                      ),
-                      contentPadding: EdgeInsets.symmetric(
-                        vertical: screenHeight * 0.015,
-                        horizontal: screenWidth * 0.04,
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide.none,
-                      ),
-                      filled: true,
-                      fillColor: const Color(0xFFf1f5f9),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                          width: 2.0,
-                          color: Colors.blueAccent,
-                        ),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: screenHeight * 0.03,
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ForgotPasswordScreen(),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        'Forgot Password?',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: screenWidth * 0.04,
-                          color: Colors.blue,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: screenHeight * 0.03,
-                  ),
-                  CustomElevatedButton(
-                    text: "Log In",
-                    backgroundColor: Colors.blue,
-                    foregroundColor: Colors.white,
-                    onPressed: _submitForm,
-                  ),
-                  SizedBox(
-                    height: screenHeight * 0.1,
-                  ),
-                  Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    height: screenHeight,
+                    child: Stack(
+                      alignment: Alignment.topCenter,
                       children: [
-                        Text(
-                          "Don't have an account? ",
-                          style: TextStyle(
-                            fontSize: screenWidth * 0.04,
+                        Container(
+                          height: screenHeight,
+                          width: screenWidth,
+                          color: kwhite,
+                          child: CustomBookVaultWidget(
+                            padding: EdgeInsets.only(top: screenHeight * 0.067),
+                            screenHeight: screenHeight,
+                            screenWidth: screenWidth,
+                            imagePath: 'assets/images/BookVault-1.svg',
+                            text: "Your gateway to Literary Treasures",
+                            svgcolour: kblack,
                           ),
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const SignUpScreen(),
+                        Positioned(
+                          top: screenHeight * 0.40,
+                          child: Container(
+                            height: screenHeight * 0.65,
+                            width: screenWidth,
+                            decoration: BoxDecoration(
+                              color: kblue_2,
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular( screenWidth * 0.16 ),
+                                topRight: Radius.circular(screenWidth * 0.16),
                               ),
-                            );
-                          },
-                          child: Text(
-                            "Sign Up",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: screenWidth * 0.045,
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.only( top: screenHeight * 0.08 ),
+                              child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+
+                                      CustomTextFormField(
+                                        controller: _emailController,
+                                        hintText: 'Email',
+                                        validator: _validateEmail,
+                                        keyboardType: TextInputType.emailAddress,
+                                        fillColor: kwhite,
+                                        screenWidth: screenWidth,
+                                        screenHeight: screenHeight,
+                                        contentPadding: EdgeInsets.fromLTRB(
+                                          screenWidth * 0.05,
+                                          screenWidth * 0.04,
+                                          0.0,
+                                          screenWidth * 0.057,
+                                        ),
+                                        hintStyle: TextStyle(
+                                          fontSize: screenWidth * 0.04,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                        errorStyle: TextStyle(
+                                          fontSize: screenHeight / 68,
+                                          height: screenHeight / 1000,
+                                          color: kwhite, // or any other color
+                                        ),
+                                        widthfactor: 0.8,
+                                        heightfactor: 0.09,
+                                        borderRadius: screenWidth/10,
+                                      ),
+
+                                    SizedBox(height: screenHeight * 0.02 ),
+
+                                    CustomTextFormField(
+                                      controller: _passwordController,
+                                      obscureText: _obscureText,
+                                      screenWidth: screenWidth,
+                                      screenHeight: screenHeight,
+                                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                                      validator: _validatePassword,
+                                      contentPadding: EdgeInsets.fromLTRB(
+                                        screenWidth * 0.05,
+                                        screenWidth * 0.04,
+                                        screenWidth / 10,
+                                        screenWidth * 0.057,
+                                      ),
+                                      fillColor: kwhite,
+                                      hintText: 'Password',
+                                      hintStyle: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: screenWidth * 0.04,
+                                      ),
+                                      suffixIcon: IconButton(
+                                          icon: Icon(
+                                             color: kdarkblue,
+                                            _obscureText ? Icons.visibility_off : Icons.visibility,
+                                          ),
+                                          onPressed: () {
+                                            setState(() {
+                                              _obscureText = !_obscureText;
+                                            });
+                                          },
+                                      ),
+                                      errorStyle: TextStyle(
+                                          fontSize: screenHeight / 68,
+                                          height: screenHeight / 1000,
+                                          color: kwhite
+                                      ),
+                                      widthfactor: 0.8,
+                                      heightfactor: 0.09,
+                                      borderRadius: screenWidth/10,
+                                    ),
+
+                                    SizedBox(height: screenHeight * 0.02 ),
+
+                                    _isLoading
+                                        ? const CircularProgressIndicator() // Show loading indicator
+                                        : CustomElevatedButton(
+                                      onPressed: _login,
+                                      backgroundColor: kblack,
+                                      foregroundColor: kwhite,
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: screenWidth * 0.004,
+                                        vertical: screenHeight * 0.005,
+                                      ),
+                                      borderRadius: screenWidth /10,
+                                      text: 'Log In',
+                                      textStyle: TextStyle(
+                                        fontSize: screenWidth * 0.045,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                      height: screenHeight * 0.07,
+                                      width: screenWidth * 0.8,
+                                    ),
+
+                                    SizedBox(height:screenHeight * 0.02 ),
+
+                                    Align(
+                                      alignment: Alignment.centerRight,
+                                      child: Padding(
+                                        padding: EdgeInsets.only(right: screenWidth/10),
+                                        child: InkWell(
+                                          onTap: () => _showForgotPasswordDialog(context),
+                                          child: Text(
+                                            'Forgot Password?',
+                                            style: TextStyle(
+                                              color: kwhite,
+                                              fontSize: screenWidth * 0.04 ,
+                                              fontWeight: FontWeight.bold
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+
+                                    SizedBox(height:screenHeight * 0.08 ),
+
+                                    Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "  Don't have an account? ",
+                                            style: TextStyle(
+                                              color: kwhite,
+                                              fontSize:  screenWidth * 0.04 ,
+                                            ),
+                                          ),
+                                          InkWell(
+                                            onTap: () => goToSignup(context),
+                                            child: Text(
+                                              'Sign Up',
+                                              style: TextStyle(
+                                                color: kwhite,
+                                                fontSize:  screenWidth * 0.04 ,
+                                                fontWeight: FontWeight.bold
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                  ],
+                                ),
                             ),
                           ),
                         ),
@@ -237,10 +324,11 @@ class _LogInScreenState extends State<LogInScreen> {
                   ),
                 ],
               ),
-            ),
-          ),
+            );
+          },
         ),
       ),
+    )
     );
   }
 }

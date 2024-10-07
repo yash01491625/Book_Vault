@@ -163,7 +163,7 @@ class _BorrowedBooksScreenState extends State<BorrowedBooksScreen> {
                           ),
                           SizedBox(height: screenHeight * 0.01),
                           Text(
-                            'Borrowed On: ${book['borrowDate'] ?? ''}',
+                            'Borrowed: ${book['borrowDate'] ?? ''}',
                             style: TextStyle(
                               fontSize: 16 * textScaleFactor,
                               color: Colors.blueGrey,

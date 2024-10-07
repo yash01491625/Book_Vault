@@ -1,5 +1,6 @@
 
 import 'package:book_vault/constants/colors.dart';
+import 'package:book_vault/screens/adminHomeScreen.dart';
 import 'package:book_vault/widgets/customTextform.dart';
 import 'package:book_vault/widgets/elevatedButton.dart';
 import 'package:book_vault/widgets/portrait_mode_wrapper.dart';
@@ -10,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'dart:developer';
 import 'package:book_vault/screens/signUpScreen.dart';
 import 'package:book_vault/screens/forgotPassword.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 
@@ -100,25 +102,53 @@ class _LoginScreenState extends State<LogInScreen> {
       _isLoading = true; // Show loading indicator
     });
 
-    final user = await _auth.loginUserWithEmailAndPassword(email, password);
+    try {
+      final user = await _auth.loginUserWithEmailAndPassword(email, password);
 
-    setState(() {
-      _isLoading = false; // Hide loading indicator
-    });
+      if (user != null) {
+        log("User Logged In");
 
-    if (user != null) {
-      log("User Logged In");
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Login Successful!')), // Success message
-      );
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => UserHomeScreen()),
-      );
-    } else {
-      _showErrorDialog("Password or Email entered is incorrect.");
+        // Check if the user exists in the "student" collection
+        final firestore = FirebaseFirestore.instance;
+        final studentDoc = await firestore.collection('student').doc(user.uid).get();
+        final staffDoc = await firestore.collection('staff').doc(user.uid).get();
+
+        if (studentDoc.exists) {
+          // User is a student
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Login Successful! Welcome Student.')),
+          );
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => UserHomeScreen()),
+          );
+        } else if (staffDoc.exists) {
+          // User is staff
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Login Successful! Welcome Staff.')),
+          );
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => AdminHomeScreen()),
+          );
+        } else {
+          // User is not found in either collection
+          _showErrorDialog("User not found in the system.");
+        }
+      } else {
+        // Handle the case where user is null after login attempt
+        _showErrorDialog("Password or Email entered is incorrect.");
+      }
+    } catch (e) {
+      log("Login error: ${e.toString()}");
+      _showErrorDialog("An unexpected error occurred: ${e.toString()}");
+    } finally {
+      setState(() {
+        _isLoading = false; // Hide loading indicator in case of error too
+      });
     }
   }
+
 
   @override
   void dispose() {

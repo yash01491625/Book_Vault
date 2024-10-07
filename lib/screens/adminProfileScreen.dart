@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AdminProfileScreen extends StatefulWidget {
   @override
@@ -6,76 +8,90 @@ class AdminProfileScreen extends StatefulWidget {
 }
 
 class _AdminProfileScreenState extends State<AdminProfileScreen> {
-  String firstName = 'John';
-  String lastName = 'Doe';
-  String email = 'john.doe@example.com';
-  String prNumber = 'PR123456';
-  String mobileNumber = '+1234567890';
-  String department = 'Computer Engineering';
-  String university = 'XYZ';
+  String firstName = '';
+  String lastName = '';
+  String email = '';
+  String mobileNumber = '';
+  String desig = '';
+
+  Future<void> _fetchUserData() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+
+      if (user != null) {
+        final userData = await FirebaseFirestore.instance
+            .collection('staff')
+            .doc(user.uid)
+            .get();
+
+        if (userData.exists) {
+          setState(() {
+            firstName = "${userData['firstName']}";
+            lastName = "${userData['lastName']}";
+            email = "${userData['email']}";
+            mobileNumber = "${userData['mobile']}";
+            desig = "${userData['designation']}";
+          });
+        }
+      }
+    } catch (e) {
+      print('Error fetching user data: $e');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserData();
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    // Fetch screen dimensions
+
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     final textScaleFactor = MediaQuery.of(context).textScaleFactor;
 
-    return SafeArea(
-      child: Scaffold(
+      return Scaffold(
         appBar: AppBar(
-          title: Text('Admin Profile'),
+          backgroundColor: Colors.blueAccent,
+          title: Text(
+            "${firstName}'s Profile",
+            style: TextStyle(color: Colors.white),
+          ),
           leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () {
               Navigator.pop(context);
             },
           ),
         ),
         body: Padding(
-          padding: EdgeInsets.all(screenWidth * 0.04), // Responsive padding
+          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03,vertical: screenWidth * 0.05),
           child: ListView(
             children: [
               Center(
-                child: CircleAvatar(
-                  radius: screenWidth * 0.15, // Responsive circle avatar size
-                  backgroundImage: AssetImage('assets/images/profile.png'),
+                child: Container(
+                  height: screenWidth * 0.55,
+                  width: screenWidth * 0.55,
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 4,
+                        offset: Offset(0, 2),
+                      ),
+                    ],
+                    borderRadius: BorderRadius.all(
+                        Radius.circular(screenWidth * 0.08)),
+                    image: DecorationImage(
+                      image: AssetImage('assets/images/adminprofile.png'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
               ),
-              // Center(
-              //             //   child: ElevatedButton(
-              //             //     onPressed: () async {
-              //             //       final updatedData = await Navigator.push(
-              //             //         context,
-              //             //         MaterialPageRoute(
-              //             //           builder: (context) => EditProfileScreen(
-              //             //             firstName: firstName,
-              //             //             lastName: lastName,
-              //             //             email: email,
-              //             //             prNumber: prNumber,
-              //             //             mobileNumber: mobileNumber,
-              //             //             department: department,
-              //             //             university: university,
-              //             //           ),
-              //             //         ),
-              //             //       );
-              //             //
-              //             //       if (updatedData != null) {
-              //             //         setState(() {
-              //             //           firstName = updatedData['firstName'] ?? firstName;
-              //             //           lastName = updatedData['lastName'] ?? lastName;
-              //             //           email = updatedData['email'] ?? email;
-              //             //           prNumber = updatedData['prNumber'] ?? prNumber;
-              //             //           mobileNumber = updatedData['mobileNumber'] ?? mobileNumber;
-              //             //           department = updatedData['department'] ?? department;
-              //             //           university = updatedData['university'] ?? university;
-              //             //         });
-              //             //       }
-              //             //     },
-              //             //     child: Text('EDIT PROFILE'),
-              //             //   ),
-              //             // ),
-              SizedBox(height: screenHeight * 0.02), // Responsive spacing
               SizedBox(height: screenHeight * 0.03),
               _buildProfileField('First Name', firstName, textScaleFactor),
               SizedBox(height: screenHeight * 0.02),
@@ -83,52 +99,52 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
               SizedBox(height: screenHeight * 0.02),
               _buildProfileField('Email', email, textScaleFactor),
               SizedBox(height: screenHeight * 0.02),
-              _buildProfileField('Staff ID', prNumber, textScaleFactor),
-              SizedBox(height: screenHeight * 0.02),
-              _buildProfileField('Designation', university, textScaleFactor),
+              _buildProfileField('Designation', desig, textScaleFactor),
               SizedBox(height: screenHeight * 0.02),
               _buildProfileField('Mobile Number', mobileNumber, textScaleFactor),
               SizedBox(height: screenHeight * 0.03),
-              // ElevatedButton(
-              //             //   onPressed: () {
-              //             //     Navigator.push(
-              //             //       context,
-              //             //       MaterialPageRoute(
-              //             //         builder: (context) => BorrowedBooksScreen(),
-              //             //       ),
-              //             //     );
-              //             //   },
-              //             //   child: Text('View Borrowed Books'),
-              //             // ),
             ],
           ),
-        ),
-      ),
-    );
+        )
+        );
+    }
   }
 
-  Widget _buildProfileField(String label, String value, double textScaleFactor) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 16 * textScaleFactor, // Responsive text size
-            fontWeight: FontWeight.bold,
-          ),
+Widget _buildProfileField(String label, String value, double textScaleFactor) {
+      return Container(
+        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.9),
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 6,
+              offset: Offset(0, 3),
+            ),
+          ],
         ),
-        SizedBox(height: 8),
-        Text(
-          value,
-          style: TextStyle(
-            fontSize: 18 * textScaleFactor, // Responsive text size
-            fontWeight: FontWeight.w600,
-            color: Colors.black87,
-          ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 16 * textScaleFactor,
+                fontWeight: FontWeight.bold,
+                color: Colors.blueAccent,
+              ),
+            ),
+            SizedBox(height: 4),
+            Text(
+              value,
+              style: TextStyle(
+                fontSize: 18 * textScaleFactor,
+                fontWeight: FontWeight.w600,
+                color: Colors.black87,
+              ),
+            ),
+          ],
         ),
-        Divider(thickness: 1, color: Colors.grey[300]),
-      ],
-    );
-  }
-}
+      );
+    }

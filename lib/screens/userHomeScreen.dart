@@ -6,6 +6,7 @@ import 'profileScreen.dart';
 import 'package:book_vault/screens/logInScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'search.dart';
 
 class UserHomeScreen extends StatefulWidget {
   @override
@@ -52,7 +53,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
     return Scaffold(
       key: _scaffoldKey,
       drawer: CustomDrawer(context),
-      appBar: CustomAppbar(_scaffoldKey),
+      appBar: CustomAppbar(context,_scaffoldKey),
       body:
           SafeArea(
             child: GreetingCard(screenWidth,name),
@@ -188,7 +189,7 @@ Widget CustomDrawer (BuildContext context) {
 }
 
 
-PreferredSizeWidget CustomAppbar(GlobalKey<ScaffoldState> scaffoldKey) {
+PreferredSizeWidget CustomAppbar(BuildContext context, GlobalKey<ScaffoldState> scaffoldKey) {
   return AppBar(
     backgroundColor: kblue_2,
 
@@ -202,7 +203,12 @@ PreferredSizeWidget CustomAppbar(GlobalKey<ScaffoldState> scaffoldKey) {
         IconButton(
             icon: Icon(Icons.search, color: kwhite,size: 30),
             onPressed: () {
-            // Search action
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BookSearchScreen(),
+                ),
+              );
             },
         ),
       ]

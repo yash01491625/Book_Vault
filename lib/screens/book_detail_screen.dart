@@ -74,7 +74,7 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
                   // Implement the action to show the PDF
                 },
                 child: Text(
-                  "Show PDF",
+                  "Download",
                   style: TextStyle(color: Colors.white),
                 ),
                 style: ElevatedButton.styleFrom(

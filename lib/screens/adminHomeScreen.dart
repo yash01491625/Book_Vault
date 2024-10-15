@@ -9,6 +9,7 @@ import 'logInScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'UploadPdf.dart';
 
 class AdminHomeScreen extends StatefulWidget {
   @override
@@ -285,13 +286,13 @@ Widget CustomDrawer (BuildContext context) {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AddBook(),
+                        builder: (context) => UploadBook(),
                       ),
                     );
                   },
                   leading: Icon(Icons.add_card, color: Colors.white),
                   title: Text(
-                    "Add Book",
+                    "Upload Book",
                     style: TextStyle(color: Colors.white),
                   ),
                 ),

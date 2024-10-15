@@ -12,8 +12,6 @@ class _BookSearchScreenState extends State<BookSearchScreen> {
   TextEditingController searchController = TextEditingController();
   List<Map<String, dynamic>> searchResults = [];
   bool isLoading = false;
-
-  // Method to search books in Firestore
   Future<void> searchBooks(String query) async {
     if (query.isEmpty) {
       setState(() {
@@ -40,7 +38,8 @@ class _BookSearchScreenState extends State<BookSearchScreen> {
       // Filter books based on case-insensitive title search
       List<Map<String, dynamic>> filteredBooks = [];
 
-      for (var book in books) {
+      // Fetch image URLs asynchronously for each filtered book
+      await Future.forEach(books, (book) async {
         final title = book['title'] ?? '';
         if (title.toLowerCase().contains(query.toLowerCase())) {
           // Fetch the image URL from Firebase Storage
@@ -53,7 +52,7 @@ class _BookSearchScreenState extends State<BookSearchScreen> {
 
           filteredBooks.add(book);
         }
-      }
+      });
 
       setState(() {
         searchResults = filteredBooks;
